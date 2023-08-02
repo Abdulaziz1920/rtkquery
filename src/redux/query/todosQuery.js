@@ -18,9 +18,16 @@ const todosQuery = createApi({
         body,
       }),
     }),
+    deleteTodo: builder.mutation({
+      query: (deleteTodo) => ({
+        url: `pcshop/${deleteTodo}`,
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 
-export const { useGetTodosQuery, useAddTodoMutation } = todosQuery;
+export const { useGetTodosQuery, useAddTodoMutation, useDeleteTodoMutation } =
+  todosQuery;
 
 export default todosQuery;

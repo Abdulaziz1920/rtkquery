@@ -1,6 +1,7 @@
 import { Button, Card, Modal } from "react-bootstrap";
 import {
   useAddTodoMutation,
+  useDeleteTodoMutation,
   useGetTodosQuery,
 } from "../redux/query/todosQuery";
 import { useState } from "react";
@@ -9,7 +10,9 @@ import { useFormik } from "formik";
 function Todos() {
   const [searchValue, setSearchValue] = useState("");
   const [formValue, setFormValue] = useState({});
-  const { data, refetch } = useGetTodosQuery({ searchValue, formValue });
+  const [deleteTodo, setDeleteTodo] = useState("");
+  const { data, refetch: getRefetch } = useGetTodosQuery({searchValue, formValue, deleteTodo});
+  const [deleteItem] = useDeleteTodoMutation();
   const [addTodo] = useAddTodoMutation();
 
   const [show, setShow] = useState(false);
@@ -17,6 +20,7 @@ function Todos() {
     setShow(false);
   };
   const handleShow = () => setShow(true);
+
   const formik = useFormik({
     initialValues: {
       title: "",
@@ -30,9 +34,16 @@ function Todos() {
       console.log(values);
       addTodo(values);
       formik.resetForm();
-      refetch();
+      getRefetch();
     },
   });
+
+  const deleteTodos = (id) => {
+    setDeleteTodo(id);
+    deleteItem(id);
+    getRefetch();
+  };
+  console.log(deleteTodo);
   return (
     <div>
       <div className="container">
@@ -61,6 +72,9 @@ function Todos() {
                       style: "currency",
                       currency: "USD",
                     }).format(el.price)}
+                  </Button>
+                  <Button onClick={() => deleteTodos(el.id)} variant="danger">
+                    Delete
                   </Button>
                 </div>
               </Card.Body>
