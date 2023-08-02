@@ -31,7 +31,6 @@ function Todos() {
     },
     onSubmit: (values) => {
       setFormValue(values);
-      console.log(values);
       addTodo(values);
       formik.resetForm();
       getRefetch();
@@ -43,7 +42,6 @@ function Todos() {
     deleteItem(id);
     getRefetch();
   };
-  console.log(deleteTodo);
   return (
     <div>
       <div className="container">
