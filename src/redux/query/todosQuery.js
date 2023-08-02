@@ -7,11 +7,20 @@ const todosQuery = createApi({
   }),
   endpoints: (builder) => ({
     getTodos: builder.query({
-      query: () => "pcshop",
+      query: ({ searchValue }) => {
+        return `pcshop?search=${searchValue}`;
+      },
+    }),
+    addTodo: builder.mutation({
+      query: (body) => ({
+        url: "pcshop",
+        method: "POST",
+        body,
+      }),
     }),
   }),
 });
 
-export const { useGetTodosQuery } = todosQuery;
+export const { useGetTodosQuery, useAddTodoMutation } = todosQuery;
 
 export default todosQuery;
